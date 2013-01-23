@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>textureSynth by ganguli-lab</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>textureSynth</h1>
+        <p>(A fork of the Portilla and Simoncelli texture synthesis code)</p>
+
+        <p class="view"><a href="https://github.com/ganguli-lab/textureSynth">View the Project on GitHub <small>ganguli-lab/textureSynth</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ganguli-lab/textureSynth/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ganguli-lab/textureSynth/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ganguli-lab/textureSynth">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>textureSynth: a texture synthesis package for Matlab</h2>
+
+<p><em>This is a fork of the texture synthesis code by Javier Portilla and Eero Simoncelli:</em></p>
+
+<hr><p>This package contains MatLab code for analyzing and synthesizing
+digital image of visual texture.  The algorithm is described in the
+references given at the bottom of this document.  Further information,
+as well the most recent versions of the code, are available at</p>
+
+<pre><code>http://www.cns.nyu.edu/~lcv/texture/
+</code></pre>
+
+<p>Incremental changes to the code are documented in the ChangeLog file.</p>
+
+<p>Written by Javier Portilla and Eero Simoncelli,  1999-2000.</p>
+
+<p>Comments/Suggestions/Bugs to:
+    <a href="mailto:javier@decsai.ugr.es">javier@decsai.ugr.es</a>
+    <a href="mailto:eero.simoncelli@nyu.edu">eero.simoncelli@nyu.edu</a></p>
+
+<hr><p>INSTALLATION</p>
+
+<p>1) download and unpack the code.  You can put the code anywhere on
+   your system, but we'll assume it's in a directory named "textureSynth".</p>
+
+<p>2) download and unpack the matlabPyrTools package from
+          <a href="http://www.cns.nyu.edu/%7Eeero/software.html">http://www.cns.nyu.edu/~eero/software.html</a>
+   This is a collection of tools for multi-scale decomposition of
+   images.  You can put the code anywhere on your system, but we'll
+   assume it's in a directory named "matlabPyrTools".</p>
+
+<p>3) Run matlab, and put the matlabPyrTools directory in your path:</p>
+
+<blockquote>
+<p>path('matlabPyrTools', path);</p>
+</blockquote>
+
+<p>4) Both the textureSynth and matlabPyrTools distributions include a MEX subdirectory
+   containing binary executables, precompiled for various platforms
+   (SunOS,Solaris,Linux,Windows).  You may need to recompile these on
+   your platform.  In addition, you should either move the relavent files from the
+   MEX subdirectory into the main directory, OR create a link/alias to them,
+   OR place the MEX subdirectory in your matlab path.</p>
+
+<hr><p>USING THE SOFTWARE</p>
+
+<ul>
+<li><p>To see a demonstration, start Matlab, change directories (using
+"cd") into the textureSynth directory, and execute "example1"
+(without the quotations).</p></li>
+<li><p>If you want to learn how to use the texture analysis and synthesis
+functions, take a look at example1.m and example2.m (these include
+many explanatory comments).</p></li>
+<li><p>For a listing of matlab function included in this package, execute
+ "help textureSynth"</p></li>
+<li><p>For details on any of the functions, execute "help "</p></li>
+</ul><hr><p>REFERENCES</p>
+
+<p>J Portilla and E P Simoncelli. A Parametric Texture Model based on
+       Joint Statistics of Complex Wavelet Coefficients. Int'l Journal
+       of Computer Vision. 40(1):49-71, October, 2000.
+       <a href="http://www.cns.nyu.edu/%7Eeero/ABSTRACTS/portilla99-abstract.html">http://www.cns.nyu.edu/~eero/ABSTRACTS/portilla99-abstract.html</a></p>
+
+<p>J Portilla and E P Simoncelli Texture Modeling and Synthesis using
+       Joint Statistics of Complex Wavelet Coefficients. IEEE Workshop
+       on Statistical and Computational Theories of Vision, Fort
+       Collins, CO, 22 June 1999.
+       <a href="http://www.cns.nyu.edu/%7Eeero/ABSTRACTS/portilla99a-abstract.html">http://www.cns.nyu.edu/~eero/ABSTRACTS/portilla99a-abstract.html</a></p>
+
+<p>J Portilla and E P Simoncelli. Texture Representation and Synthesis
+       Using Correlation of Complex Wavelet Coefficient
+       Magnitudes. Technical Report #54, Consejo Superior de
+       Investigaciones Cientificas (CSIC), Madrid. 29 March 1999.
+       <a href="http://www.cns.nyu.edu/%7Eeero/ABSTRACTS/portilla98-abstract.html">http://www.cns.nyu.edu/~eero/ABSTRACTS/portilla98-abstract.html</a></p>
+
+<p>E P Simoncelli and J Portilla. Texture Characterization via Joint
+       Statistics of Wavelet Coefficient Magnitudes. In 5th IEEE Int'l
+       Conf on Image Processing. Chicago, IL. Oct 4-7,  1998.
+       <a href="http://www.cns.nyu.edu/%7Eeero/ABSTRACTS/simoncelli98b-abstract.html">http://www.cns.nyu.edu/~eero/ABSTRACTS/simoncelli98b-abstract.html</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ganguli-lab">ganguli-lab</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
