@@ -31,7 +31,7 @@ ramp = meshgrid(1:Nsx/4,1:Nsy)*4/Nsy;
 mask = [zeros(Nsy,Nsx/2) ramp ramp(:,Nsx/4:-1:1)];
 mask =  1/2*(1-cos(pi*mask));
 
-showIm(mask>0, 'auto', 'auto', 'Mask');
+showIm(double(mask>0), 'auto', 'auto', 'Mask');
 display('Press any key to continue');pause
 
 imKeep = zeros(Nsx*Nsy,2);

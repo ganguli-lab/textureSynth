@@ -6,7 +6,7 @@ function [params] = textureAnalysis(im0, Nsc, Nor, Na)
 % 	im0: 	original image
 % 	Nsc: 	number of scales
 % 	Nor: 	number of orientations
-% 	Na:	spatial neighborhood considered (Na x Na)	
+% 	Na:	spatial neighborhood considered (Na x Na)
 %
 % Example: Nsc=4; Nor=4; Na=7;
 %
@@ -16,7 +16,7 @@ function [params] = textureAnalysis(im0, Nsc, Nor, Na)
 % Work described in:
 %  "A Parametric Texture Model based on Joint Statistics of Complex Wavelet Coefficients".
 %  J Portilla and E P Simoncelli. Int'l Journal of Computer Vision,
-%  vol.40(1), pp. 49-71, Dec 2000.   
+%  vol.40(1), pp. 49-71, Dec 2000.
 %
 % Please refer to this publication if you use the program for research or
 % for technical applications. Thank you.
@@ -63,7 +63,7 @@ skew0 = skew2(im0, mean0, var0);
 kurt0 = kurt2(im0, mean0, var0);
 statg0 = [mean0 var0 skew0 kurt0 mn0 mx0];
 
-% Add a little bit of noise to the original, in case it has been 
+% Add a little bit of noise to the original, in case it has been
 % artificially generated, to avoid instability crated by symmetric
 % conditions at the synthesis stage.
 
@@ -107,7 +107,7 @@ Sch = min(Nly,Nlx); %size of low band
 le = min(Sch/2-1,la);
 cy = Nly/2+1;
 cx = Nlx/2+1;
-ac = fftshift(real(ifft2(abs(fft2(im)).^2)))/prod(size(ch));
+ac = fftshift(real(ifft2(abs(fft2(im)).^2)))/numel(ch);
 ac = ac(cy-le:cy+le,cx-le:cx+le);
 acr(la-le+1:la+le+1,la-le+1:la+le+1,Nsc+1) = ac;
 skew0p = zeros(Nsc+1,1);
@@ -133,7 +133,7 @@ for nsc = Nsc:-1:1,
     le = min(Sch/2-1,la);
     cx = Nlx/2+1;  %Assumes Nlx even
     cy = Nly/2+1;
-    ac = fftshift(real(ifft2(abs(fft2(ch)).^2)))/prod(size(ch));
+    ac = fftshift(real(ifft2(abs(fft2(ch)).^2)))/numel(ch);
     ac = ac(cy-le:cy+le,cx-le:cx+le);
     ace(la-le+1:la+le+1,la-le+1:la+le+1,nsc,nor) = ac;
   end
@@ -150,8 +150,8 @@ for nsc = Nsc:-1:1,
 	 rpyr0(bandInds); zeros(prod(fakePind(size(fakePind,1),:)),1);];
   ch = reconSFpyr(fakePyr, fakePind, [1]);     % recon ori bands only
   im = real(expand(im,2))/4;
-  im = im + ch;  
-  ac = fftshift(real(ifft2(abs(fft2(im)).^2)))/prod(size(ch));
+  im = im + ch;
+  ac = fftshift(real(ifft2(abs(fft2(im)).^2)))/numel(ch);
   ac = ac(cy-le:cy+le,cx-le:cx+le);
   acr(la-le+1:la+le+1,la-le+1:la+le+1,nsc) = ac;
   vari = ac(le+1,le+1);
@@ -212,9 +212,9 @@ for nsc = 1:Nsc,
       C0(1:np,1:np,Nsc+1) = innerProd(parents)/(cousinSz/4);
     end
   end
-  
+
   cousins = reshape(real(pyr0(cousinInd)), [cousinSz Nor]);
-  nrc = size(cousins,2);   nrp = size(rparents,2);  
+  nrc = size(cousins,2);   nrp = size(rparents,2);
   Cr0(1:nrc,1:nrc,nsc) = innerProd(cousins)/cousinSz;
   if (nrp > 0)
     Crx0(1:nrc,1:nrp,nsc) = (cousins'*rparents)/cousinSz;
@@ -241,5 +241,3 @@ params = struct('pixelStats', statg0, ...
 		'cousinRealCorr', Cr0, ...
 		'parentRealCorr', Crx0, ...
 		'varianceHPR', vHPR0);
-
-

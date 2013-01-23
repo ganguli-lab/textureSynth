@@ -3,7 +3,7 @@ function [im,snrP,imS] = textureSynthesis(params, im0, Niter, cmask, imask)
 % [res,snrP,imS] = textureSynthesis(params, initialIm, Niter, cmask, imask)
 %
 % Synthesize texture applying Portilla-Simoncelli model/algorithm.
-%	
+%
 % params: structure containing texture parameters (as returned by textureAnalysis).
 %
 % im0: initial image, OR a vector (Ydim, Xdim, [SEED]) containing
@@ -32,7 +32,7 @@ function [im,snrP,imS] = textureSynthesis(params, im0, Niter, cmask, imask)
 % Work described in:
 %  "A Parametric Texture Model based on Joint Statistics of Complex Wavelet Coefficients".
 %  J Portilla and E P Simoncelli. Int'l Journal of Computer Vision,
-%  vol.40(1), pp. 49-71, Dec 2000.   
+%  vol.40(1), pp. 49-71, Dec 2000.
 %
 % Please refer to this publication if you use the program for research or
 % for technical applications. Thank you.
@@ -57,7 +57,7 @@ else
   cmask = ones(4,1);
 end
 
-%% Extract parameters  
+%% Extract parameters
 statg0 = params.pixelStats;
 mean0 = statg0(1); var0 =  statg0(2);
 skew0 =  statg0(3); kurt0 =  statg0(4);
@@ -125,7 +125,7 @@ drawnow
 prev_im=im;
 
 imf = max(1,gcf-1);
-figure(imf);   
+figure(imf);
 clf;showIm(im,'auto',1); title(sprintf('iteration 0'));
 
 nq = 0;
@@ -135,7 +135,7 @@ imS = zeros(Ny,Nx,Nq);
 %% MAIN LOOP
 for niter = 1:Niter
 
-%p = niter/Niter; 
+%p = niter/Niter;
 p = 1;
 
   %% Build the steerable pyramid
@@ -153,7 +153,7 @@ p = 1;
   apyr = abs(pyr);
 
   %% Adjust autoCorr of lowBand
-  nband = size(pind,1); 
+  nband = size(pind,1);
   ch = pyrBand(pyr,pind,nband);
   Sch = min(size(ch)/2);
   nz = sum(sum(~isnan(acr0(:,:,Nsc+1))));
@@ -177,11 +177,11 @@ if cmask(2),
 end % cmask(2)
 if cmask(1),
   if vari/var0 > 1e-4,
-  	[im,snr7(niter,2*(Nsc+1)-1)] = modskew(im,skew0p(Nsc+1),p);	% Adjusts skewness 
-  	[im,snr7(niter,2*(Nsc+1))] = modkurt(im,kurt0p(Nsc+1),p);	% Adjusts kurtosis 
+  	[im,snr7(niter,2*(Nsc+1)-1)] = modskew(im,skew0p(Nsc+1),p);	% Adjusts skewness
+  	[im,snr7(niter,2*(Nsc+1))] = modkurt(im,kurt0p(Nsc+1),p);	% Adjusts kurtosis
   end
 end	% cmask(2)
- 
+
   %% Subtract mean of magnitude
 if cmask(3),
   magMeans = zeros(size(pind,1), 1);
@@ -194,7 +194,7 @@ end	% cmask(3)
 
   %% Coarse-to-fine loop:
   for nsc = Nsc:-1:1
-    
+
     firstBnum = (nsc-1)*Nor+2;
     cousinSz = prod(pind(firstBnum,:));
     ind = pyrBandIndices(pind,firstBnum);
@@ -206,7 +206,7 @@ if (cmask(3) | cmask(4)),
       parents = zeros(cousinSz,Nor);
       rparents = zeros(cousinSz,Nor*2);
       for nor = 1:Nor
-	nband = (nsc+1-1)*Nor+nor+1; 
+	nband = (nsc+1-1)*Nor+nor+1;
 
         tmp = expand(pyrBand(pyr, pind, nband),2)/4;
 	rtmp = real(tmp); itmp = imag(tmp);
@@ -227,7 +227,7 @@ if cmask(3),
     %% Adjust cross-correlation with MAGNITUDES at other orientations/scales:
     cousins = reshape(apyr(cousinInd), [cousinSz Nor]);
     nc = size(cousins,2);   np = size(parents,2);
-    if (np == 0)    
+    if (np == 0)
       [cousins, snr3(niter,nsc)] = adjustCorr1s(cousins, C0(1:nc,1:nc,nsc), 2, p);
     else
       [cousins, snr3(niter,nsc), snr4(niter,nsc)] = ...
@@ -241,14 +241,14 @@ if cmask(3),
       apyr(ind) = vector(cousins);
     end
 
-    %% Adjust autoCorr of mag responses 
-    nband = (nsc-1)*Nor+2; 
+    %% Adjust autoCorr of mag responses
+    nband = (nsc-1)*Nor+2;
     Sch = min(pind(nband,:)/2);
     nz = sum(sum(~isnan(ace0(:,:,nsc,1))));
     lz = (sqrt(nz)-1)/2;
     le = min(Sch/2-1,lz);
     for nor = 1:Nor,
-      nband = (nsc-1)*Nor+nor+1; 
+      nband = (nsc-1)*Nor+nor+1;
       ch = pyrBand(apyr,pind,nband);
       [ch, snr1(niter,nband-1)] = modacor22(ch,...
 	ace0(la-le+1:la+le+1,la-le+1:la+le+1,nsc,nor), p);
@@ -290,15 +290,15 @@ end   % cmask(3)
     ang = mkAngle(dims, 0, ctr);
     ang(ctr(1),ctr(2)) = -pi/2;
     for nor = 1:Nor,
-      nband = (nsc-1)*Nor+nor+1; 
-      ind = pyrBandIndices(pind,nband); 
+      nband = (nsc-1)*Nor+nor+1;
+      ind = pyrBandIndices(pind,nband);
       ch = pyrBand(pyr, pind, nband);
       ang0 = pi*(nor-1)/Nor;
       xang = mod(ang-ang0+pi, 2*pi) - pi;
       amask = 2*(abs(xang) < pi/2) + (abs(xang) == pi/2);
       amask(ctr(1),ctr(2)) = 1;
       amask(:,1) = 1;
-      amask(1,:) = 1; 
+      amask(1,:) = 1;
       amask = fftshift(amask);
       ch = ifft2(amask.*fft2(ch));	% "Analytic" version
       pyr(ind) = ch;
@@ -312,7 +312,7 @@ end   % cmask(3)
     %% Make fake pyramid, containing dummy hi, ori, lo
     fakePind = pind([bandNums(1), bandNums, bandNums(Nor)+1],:);
     fakePyr = [zeros(prod(fakePind(1,:)),1);...
-	 real(pyr(bandInds)); zeros(prod(fakePind(size(fakePind,1),:)),1)]; 
+	 real(pyr(bandInds)); zeros(prod(fakePind(size(fakePind,1),:)),1)];
     ch = reconSFpyr(fakePyr, fakePind, [1]);     % recon ori bands only
     im = real(expand(im,2))/4;
     im = im + ch;
@@ -325,12 +325,12 @@ if cmask(2),
 	im = im*sqrt(vari/var2(im));
     end
 end	% cmask(2)
-    im = real(im);  
+    im = real(im);
 
 if cmask(1),
-  %% Fix marginal stats 
+  %% Fix marginal stats
   if vari/var0 > 1e-4,
-        [im,snr7(niter,2*nsc-1)] = modskew(im,skew0p(nsc),p);       % Adjusts skewness 
+        [im,snr7(niter,2*nsc-1)] = modskew(im,skew0p(nsc),p);       % Adjusts skewness
         [im,snr7(niter,2*nsc)] = modkurt(im,kurt0p(nsc),p);         % Adjusts kurtosis
   end
 end	% cmask(1)
@@ -357,7 +357,7 @@ end % cmask
   [mns mxs] = range2(im + mean0);
   snr7(niter,2*(Nsc+1)+2) = snr(mx0-mn0,sqrt((mx0-mxs)^2+(mn0-mns)^2));
 if cmask(1),
-  im = im*sqrt(((1-p)*vars + p*var0)/vars);	
+  im = im*sqrt(((1-p)*vars + p*var0)/vars);
 end	% cmaks(1)
   im = im+mean0;
 if cmask(1),
@@ -365,8 +365,8 @@ if cmask(1),
   [im, snr7(niter,2*(Nsc+1)+4)] = modkurt(im,kurt0,p);	% Adjusts kurtosis (keep mean and variance,
 					% but not skewness)
   im = max(min(im,(1-p)*max(max(im))+p*mx0),...
-		  (1-p)*min(min(im))+p*mn0);		% Adjusts range (affects everything)	
-else 
+		  (1-p)*min(min(im))+p*mn0);		% Adjusts range (affects everything)
+else
   snr7(niter,2*(Nsc+1)+3) = snr(skew0,skew0-skew2(im));
   snr7(niter,2*(Nsc+1)+4) = snr(kurt0,kurt0-kurt2(im));
 end	% cmask(1)
@@ -385,7 +385,7 @@ end	% cmask(1)
   end
 
   tmp = prev_im;
-  prev_im=im;	
+  prev_im=im;
 
   figure(imf);
   subplot(1,2,1);
@@ -393,14 +393,14 @@ end	% cmask(1)
   subplot(1,2,2);
   showIm(im,'auto',1); title(sprintf('iteration %d/%d',niter,Niter));
   drawnow
-  
+
   % accelerator
   alpha = 0.8;
   im = im + alpha*(im - tmp);
-  
+
 commented = 1;  % set it to 0 for displaying convergence of parameters in SNR (dB)
-if ~commented,    
-   
+if ~commented,
+
 % The graphs that appear reflect
 % the relative distance of each parameter or group
 % of parametersi, to the original's, in decibels.
@@ -417,7 +417,7 @@ if cmask(2),
   subplot(172); plot(snr2); title('Raw auto');
 end
 if cmask(3),
-  subplot(173); plot(snr1); title('Mag auto'); 
+  subplot(173); plot(snr1); title('Mag auto');
   subplot(174); plot(snr3); title('Mag ori');
   subplot(175); plot(snr4); title('Mag scale');
 end
@@ -426,7 +426,7 @@ if (Nrp > 0) & cmask(4),
 end
   subplot(177); plot(snr6); title('Im change');
   drawnow
-  
+
 end  % if ~commented
 
 end %END  MAIN LOOP
